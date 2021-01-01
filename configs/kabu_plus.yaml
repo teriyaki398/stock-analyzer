@@ -1,0 +1,14 @@
+financial_results:
+  interval: monthly
+  base_url: https://csvex.com/kabu.plus/csv/japan-all-stock-financial-results/monthly/
+  file_name_without_ext: japan-all-stock-financial-results
+
+stock_variation_data:
+  interval: daily
+  base_url: https://csvex.com/kabu.plus/csv/japan-all-stock-data/daily/
+  file_name_without_ext: japan-all-stock-data
+
+stock_data:
+  interval: daily
+  base_url: https://csvex.com/kabu.plus/csv/japan-all-stock-prices/daily/
+  file_name_without_ext: japan-all-stock-prices
