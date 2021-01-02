@@ -18,7 +18,7 @@ def main():
         for date in yield_date_prefix_without_holiday(last_updated_date):
             client = KabuPlusClient(config.kabu_plus_id, config.kabu_plus_pw)
 
-            file_name = generate_file_name(config.kabu_plus_config, key, date)
+            file_name = generate_file_name(config, key, date)
             target_file_path = generate_file_path(config, key, file_name)
             target_url = target_key_config.get("base_url") + file_name
 

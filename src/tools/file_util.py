@@ -61,12 +61,14 @@ def get_last_updated_date(config, key):
 
 
 def get_saved_date_by_file_name(file_name):
-    date = re.search(r"\d{8}", file_name).group()
+    date = re.search(r"\d{8}", file_name)
+    if date != None:
+        return date.group()
     return date
 
 
-def generate_file_name(kabu_plus_config, key, date):
-    return "{}_{}.csv".format(kabu_plus_config.get(key).get("file_name_without_ext"), date)
+def generate_file_name(config, key, date):
+    return "{}_{}.csv".format(config.kabu_plus_config.get(key).get("file_name_without_ext"), date)
 
 
 def generate_file_path(config, key, file_name):
