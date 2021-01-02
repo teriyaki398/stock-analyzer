@@ -4,13 +4,14 @@ import yaml
 
 
 class Config:
+    KABU_PLUS_CONFIG = "configs/kabu_plus.yaml"
 
     def __init__(self):
-        self.__kabu_plus_save_dir = os.environ.get("SAVE_BASE_DIR")
+        self.__local_resource_dir = os.environ.get("SAVE_BASE_DIR")
         self.__kabu_plus_id = os.environ.get("KABU_PLUS_ID")
         self.__kabu_plus_pw = os.environ.get("KABU_PLUS_PW")
 
-        if self.__kabu_plus_save_dir == None:
+        if self.__local_resource_dir == None:
             print("SAVE_BASE_DIR is not specified")
             exit(1)
 
@@ -23,8 +24,8 @@ class Config:
             exit(1)
 
     @property
-    def kabu_plus_save_dir(self):
-        return self.__kabu_plus_save_dir
+    def local_resource_dir(self):
+        return self.__local_resource_dir
 
     @property
     def kabu_plus_id(self):
@@ -35,6 +36,5 @@ class Config:
         return self.__kabu_plus_pw
 
     def load_kabu_plus_config(self):
-        path = "../configs/kabu_plus.yaml"
-        with open(path) as f:
+        with open(self.KABU_PLUS_CONFIG) as f:
             return yaml.safe_load(f)

@@ -44,3 +44,11 @@ def define_latest_saved_date(base_dir, key):
 
     last_date = re.search(r"\d{8}", last_file).group()
     return last_date
+
+
+def generate_file_name(kabu_plus_config, date):
+    return "{}_{}.csv".format(kabu_plus_config.get("file_name_without_ext"), date)
+
+
+def generate_file_path(config, key, file_name):
+    return "{}/{}/{}".format(config.local_resource_dir, key, file_name)
