@@ -7,6 +7,7 @@ class Config:
     KABU_PLUS_CONFIG = "configs/kabu_plus.yaml"
 
     def __init__(self):
+        self.__kabu_plus_config = self.load_kabu_plus_config()
         self.__local_resource_dir = os.environ.get("SAVE_BASE_DIR")
         self.__kabu_plus_id = os.environ.get("KABU_PLUS_ID")
         self.__kabu_plus_pw = os.environ.get("KABU_PLUS_PW")
@@ -22,6 +23,10 @@ class Config:
         if self.__kabu_plus_pw == None:
             print("KABU_PLUS_PW is not specified")
             exit(1)
+
+    @property
+    def kabu_plus_config(self):
+        return self.__kabu_plus_config
 
     @property
     def local_resource_dir(self):

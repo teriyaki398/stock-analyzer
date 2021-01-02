@@ -1,8 +1,9 @@
-
+from pathlib import Path
 
 def load_financial_results(sc, save_dir_path, key):
+    path = Path(save_dir_path, key)
 
-    with open(save_dir_path) as f:
+    with open(str(path)) as f:
         all_data_list = f.read().split('\n')
     return select_data_by_sc(sc, all_data_list)
 

@@ -35,19 +35,38 @@ def yield_date_prefix_without_holiday(start_date):
             yield next.strftime("%Y%m%d")
 
 
-def define_latest_saved_date(base_dir, key):
-    path = Path(base_dir, key)
-
-    files = os.listdir(str(path))
-    files.sort()
-    last_file = files[-1]
-
-    last_date = re.search(r"\d{8}", last_file).group()
-    return last_date
+"""
+return list of all files contained in key directory
+"""
+def get_all_file_list_by_key(config, key):
+    resource_dir_path = config.local_resource_dir
+    dir_path = Path(resource_dir_path, key)
+    return os.listdir(str(dir_path))
 
 
-def generate_file_name(kabu_plus_config, date):
-    return "{}_{}.csv".format(kabu_plus_config.get("file_name_without_ext"), date)
+"""
+return latest file contained in key directory
+"""
+def get_latest_file_name(config, key):
+    file_list = get_all_file_list_by_key(config, key)
+    return file_list[-1]
+
+
+"""
+return last updated date extracted by file prefix
+"""
+def get_last_updated_date(config, key):
+    latest_file_name = get_latest_file_name(config, key)
+    return get_saved_date_by_file_name(latest_file_name)
+
+
+def get_saved_date_by_file_name(file_name):
+    date = re.search(r"\d{8}", file_name).group()
+    return date
+
+
+def generate_file_name(kabu_plus_config, key, date):
+    return "{}_{}.csv".format(kabu_plus_config.get(key).get("file_name_without_ext"), date)
 
 
 def generate_file_path(config, key, file_name):

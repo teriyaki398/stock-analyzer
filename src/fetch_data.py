@@ -9,17 +9,16 @@ DEFAULT_INTERVAL = 600
 
 def main():
     config = Config()
-    kabu_plus_config = config.load_kabu_plus_config()
 
     # Download data if new data is existing
-    for key in kabu_plus_config.keys():
-        target_key_config = kabu_plus_config.get(key)
-        last_save_date = define_latest_saved_date(config.local_resource_dir, key)
+    for key in config.kabu_plus_config.keys():
+        last_updated_date = get_last_updated_date(config, key)
+        target_key_config = config.kabu_plus_config.get(key)
 
-        for date in yield_date_prefix_without_holiday(last_save_date):
+        for date in yield_date_prefix_without_holiday(last_updated_date):
             client = KabuPlusClient(config.kabu_plus_id, config.kabu_plus_pw)
 
-            file_name = generate_file_name(kabu_plus_config.get(key), date)
+            file_name = generate_file_name(config.kabu_plus_config, key, date)
             target_file_path = generate_file_path(config, key, file_name)
             target_url = target_key_config.get("base_url") + file_name
 
