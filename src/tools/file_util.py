@@ -60,8 +60,23 @@ def get_last_updated_date(config, key):
     return get_saved_date_by_file_name(latest_file_name)
 
 
+"""
+if given file name is like this; file_20200801.csv
+then return 202008
+"""
+def get_saved_month_by_file_name(file_name):
+    month = re.search(r"20[1-2][0-9][0-1][0-9]", file_name)
+    if month != None:
+        return month.group()
+    return month
+
+
+"""
+if given file name is like this; file_20200801.csv
+then return 20200801
+"""
 def get_saved_date_by_file_name(file_name):
-    date = re.search(r"\d{8}", file_name)
+    date = re.search(r"20[1-2][0-9][0-1][0-9][0-3][0-9]", file_name)
     if date != None:
         return date.group()
     return date
