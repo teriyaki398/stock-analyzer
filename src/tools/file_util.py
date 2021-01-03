@@ -4,19 +4,6 @@ from datetime import datetime
 from datetime import timedelta
 from pathlib import Path
 
-"""
-start_date: YYYYMMdd
-"""
-def yield_date_prefix(start_date):
-    start_dt = datetime.strptime(start_date, '%Y%m%d')
-    end_dt = datetime.now()
-
-    total_days = (end_dt - start_dt).days + 1
-
-    for i in range(total_days):
-        next = start_dt + timedelta(i)
-        yield next.strftime("%Y%m%d")
-
 
 """
 start_date: YYYYMMdd

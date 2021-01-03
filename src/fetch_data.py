@@ -4,8 +4,6 @@ from config_loader import Config
 from tools.file_util import *
 from tools.kabuplus_client import KabuPlusClient
 
-DEFAULT_INTERVAL = 600
-
 
 def main():
     config = Config()
@@ -25,7 +23,6 @@ def main():
             print("---")
             print("{}".format(file_name))
             if not os.path.exists(target_file_path):
-                time.sleep(DEFAULT_INTERVAL)
                 try:
                     res = client.get(target_url)
                     print("success to download")

@@ -27,7 +27,7 @@ def load_stock_data_by_sc(sc, date_str, config):
     result["market"] = selected_data[2]     # 市場
     result["business_category"] = selected_data[3]  # 業種
     result["datetime"] = selected_data[4]   # 日時 2020/01/01 00:00:00
-    result["prices"] = selected_data[5]  # 株価
+    result["price"] = selected_data[5]  # 株価
     result["ratio_with_yesterday"] = selected_data[6]    # 前日比
     result["ratio_with_yesterday_percent"] = selected_data[7]    # 前日比 %
     result["end_price_yesterday"] = selected_data[8]    # 前日終値

@@ -1,4 +1,7 @@
 import requests
+import time
+
+DEFAULT_INTERVAL = 600
 
 class KabuPlusClient:
 
@@ -8,6 +11,7 @@ class KabuPlusClient:
 
     def get(self, url):
         res = requests.get(url, auth = (self.username, self.password))
+        time.sleep(DEFAULT_INTERVAL)    # To avoid requesting many times
 
         if res.ok:
             res.encoding = res.apparent_encoding
