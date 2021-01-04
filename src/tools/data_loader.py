@@ -1,52 +1,117 @@
-from . import file_util
+import re
 from pathlib import Path
+
+from . import file_util
+from . import data_converter
 
 STOCK_DATA_KEY = "stock_data"
 STOCK_VARIATION_DATA_KEY = "stock_variation_data"
 FINANCIAL_RESULTS_KEY = "financial_results"
 
+SC_KEY = "sc"
+
+def load_all_stock_data(date_str, config):
+    all_data = load_target_date_data_by_key(date_str, config, STOCK_DATA_KEY)
+    if all_data == None:
+        return None
+
+    result = {}
+    for data in all_data:
+        d = data_converter.convert_raw_stock_data_list_to_dict(data)
+        result[d[SC_KEY]] = d
+    return result
+
+
+def load_all_stock_variation_data(date_str, config):
+    all_data = load_target_date_data_by_key(date_str, config, STOCK_VARIATION_DATA_KEY)
+    if all_data == None:
+        return None
+
+    result = {}
+    for data in all_data:
+        d = data_converter.convert_raw_stock_variation_data_list_to_dict(data)
+        result[d[SC_KEY]] = d
+    return result
+
+
+def load_all_financial_results(date_str, config):
+    all_data = load_target_month_data_of_key(date_str, config, FINANCIAL_RESULTS_KEY)
+    if all_data == None:
+        return None
+
+    result = {}
+    for data in all_data:
+        d = data_converter.convert_raw_financial_results_list_to_dict(data)
+        result[d[SC_KEY]] = d
+    return result
+
+
+def load_sc_stock_data(sc, date_str, config):
+    all_data = load_all_stock_data(date_str, config)
+    try:
+        return all_data[str(sc)]
+    except Exception:
+        return None
+
+
+def load_sc_stock_variation_data(sc, date_str, config):
+    all_data = load_all_stock_variation_data(date_str, config)
+    try:
+        return all_data[str(sc)]
+    except Exception:
+        return None
+
+
+def load_sc_financial_results_data(sc, date_str, config):
+    all_data = load_all_financial_results(date_str, config)
+    try:
+        return all_data[str(sc)]
+    except Exception:
+        return None
 
 
 """
-Return financial results data of given date_str and given sc
+Return all data contained in file specified by key and date
 """
-def load_financial_results_by_sc(sc, date_str, config):
-    target_file_name = search_target_date_str_file_name_by_key(date_str, config, FINANCIAL_RESULTS_KEY)
+def load_target_date_data_by_key(date_str, config, key):
+    target_file_name = search_target_date_file_by_key(date_str, config, key)
     if target_file_name == None:
         return None
 
-    path = Path(config.local_resource_dir, FINANCIAL_RESULTS_KEY, target_file_name)
-
+    path = Path(config.local_resource_dir, key, target_file_name)
     with open(str(path)) as f:
-        data = f.read().split("\n")
+        data_str_list = f.read().split("\n")
 
-    selected_data = select_data_by_sc(sc, data)
+    result = []
+    for data_str in data_str_list:
+        if data_str != "":
+            result.append([d.replace('"', '') for d in data_str.split(",")])
+    return result
 
-    result = {}
-    result["sc"] = selected_data[0] # SC
-    result["company_name"] = selected_data[1]   # 名称
-    result["settlement_season"] = selected_data[2]  # 決算期
-    result["settlement_report_date"] = selected_data[3] # 決算発表日(本決算)
-    result["sales_amount"] = selected_data[4]       # 売上高
-    result["operating_income"] = selected_data[5]   # 営業利益
-    result["ordinary_income"] = selected_data[6]    # 経常利益
-    result["net_income"] = selected_data[7]     # 当期利益
-    result["total_assets"] = selected_data[8]   # 総資産
-    result["net_worth"] = selected_data[9]       # 自己資本
-    result["capital"] = selected_data[10]    # 資本金
-    result["interest_bearing_debt"] = selected_data[11]    # 有利子負債
-    result["equity_ratio"] = selected_data[12]    # 自己資本比率
-    result["ROE"] = selected_data[13]    # ROE
-    result["ROA"] = selected_data[14]    # ROA
-    result["outstanding_shares_number"] = selected_data[15]    # 発行済株式数
 
+"""
+Return all data contained in specified month file
+"""
+def load_target_month_data_of_key(date_str, config, key):
+    target_file_name = search_target_month_file_by_key(date_str, config, key)
+    if target_file_name == None:
+        return None
+
+    path = Path(config.local_resource_dir, key, target_file_name)
+    with open(str(path)) as f:
+        data_str_list = f.read().split("\n")
+
+    result = []
+    for data_str in data_str_list:
+        if data_str != "":
+            result.append([d.replace('"', '') for d in data_str.split(",")])
     return result
 
 
 """
 Search file contained in key directory by specified date_str
 """
-def search_target_date_str_file_name_by_key(date_str, config, key):
+def search_target_date_file_by_key(date_str, config, key):
     all_file_list = file_util.get_all_file_list_by_key(config, key)
     for file_name in all_file_list:
         if date_str == file_util.get_saved_date_by_file_name(file_name):
@@ -55,10 +120,18 @@ def search_target_date_str_file_name_by_key(date_str, config, key):
 
 
 """
-return list data extracted by sc
+Search file contained in key directory by specified date_str
+Return the first file whose month is matched
 """
-def select_data_by_sc(sc, all_data_list):
-    for data_str in all_data_list:
-        data = [d.replace('"', '') for d in data_str.split(",")]
-        if str(sc) == data[0]:
-            return data
+def search_target_month_file_by_key(date_str, config, key):
+    m = re.search(r"20[1-2][0-9][0-1][0-9]", date_str)
+    if m == None:
+        return None
+
+    month_str = m.group()
+    all_file_list = file_util.get_all_file_list_by_key(config, key)
+
+    for file_name in all_file_list:
+        if month_str == file_util.get_saved_month_by_file_name(file_name):
+            return file_name
+    return None
