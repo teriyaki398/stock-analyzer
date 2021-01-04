@@ -50,7 +50,7 @@ def load_sc_stock_data(sc, date_str, config):
     all_data = load_all_stock_data(date_str, config)
     try:
         return all_data[str(sc)]
-    except KeyError:
+    except Exception:
         return None
 
 
@@ -58,7 +58,7 @@ def load_sc_stock_variation_data(sc, date_str, config):
     all_data = load_all_stock_variation_data(date_str, config)
     try:
         return all_data[str(sc)]
-    except KeyError:
+    except Exception:
         return None
 
 
@@ -66,7 +66,7 @@ def load_sc_financial_results_data(sc, date_str, config):
     all_data = load_all_financial_results(date_str, config)
     try:
         return all_data[str(sc)]
-    except KeyError:
+    except Exception:
         return None
 
 
