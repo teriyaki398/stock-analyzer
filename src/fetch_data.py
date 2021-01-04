@@ -1,23 +1,23 @@
-import time
+import os
 
-from config_loader import Config
-from tools.file_util import *
+import config_loader
+from tools import file_util
 from tools.kabuplus_client import KabuPlusClient
 
 
 def main():
-    config = Config()
+    config = config_loader.Config()
 
     # Download data if new data is existing
     for key in config.kabu_plus_config.keys():
-        last_updated_date = get_last_updated_date(config, key)
+        last_updated_date = file_util.get_last_updated_date(config, key)
         target_key_config = config.kabu_plus_config.get(key)
 
-        for date in yield_date_prefix_without_holiday(last_updated_date):
+        for date in file_util.yield_date_prefix_without_holiday(last_updated_date):
             client = KabuPlusClient(config.kabu_plus_id, config.kabu_plus_pw)
 
-            file_name = generate_file_name(config, key, date)
-            target_file_path = generate_file_path(config, key, file_name)
+            file_name = file_util.generate_file_name(config, key, date)
+            target_file_path = file_util.generate_file_path(config, key, file_name)
             target_url = target_key_config.get("base_url") + file_name
 
             print("---")
