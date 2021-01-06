@@ -17,7 +17,7 @@ def main():
 
         target_key_config = config.kabu_plus_config.get(key)
 
-        for date in date_util.yield_date_prefix_except_holiday(last_updated_date, datetime.now()):
+        for date in date_util.yield_date_except_holiday(last_updated_date, datetime.now()):
             client = KabuPlusClient(config.kabu_plus_id, config.kabu_plus_pw)
 
             date_prefix = date_util.datetime_to_date_str(date)

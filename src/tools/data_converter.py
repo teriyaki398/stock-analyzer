@@ -34,7 +34,7 @@ def convert_raw_stock_variation_data_list_to_dict(data):
     result["pbr"] = convert_to_float(data[9])  # "PBR（実績）"
     result["eps"] = convert_to_float(data[10])  # "EPS（予想）"
     result["bps"] = convert_to_float(data[11])  # "BPS（実績）"
-    result["minimum_perchase_price"] = convert_to_float(data[12])  # "最低購入額"
+    result["minimum_purchase_price"] = convert_to_float(data[12])  # "最低購入額"
     result["unit_share"] = convert_to_float(data[13])  # "単元株"
     result["highest_price_date"] = data[14]  # "高値日付"
     result["highest_price_in_this_year"] = convert_to_float(data[15])  # "年初来高値"

@@ -64,7 +64,7 @@ def has_one_golden_cross(short_trend, long_trend):
 """
 Check it contains only one dead cross.
 """
-def has_one_dead_cross(short_trend, long_trend):
+def has_dead_cross(short_trend, long_trend):
     diff = [short_trend[i] - long_trend[i] for i in range(len(short_trend))]
 
     positive_inversion_count = 0
@@ -73,18 +73,38 @@ def has_one_dead_cross(short_trend, long_trend):
             continue
         if diff[i] < 0 and diff[i-1] >= 0:
             positive_inversion_count += 1
-    if positive_inversion_count == 1:
+    if positive_inversion_count > 0:
         return True
     else:
         return False
 
 
 """
+Return true if all prices are higher than each prices of trend
+"""
+def is_all_prices_are_higher_than_trend(prices, trend, days):
+    prices_in_days = prices[-1*days:]
+    trend_in_days = trend[-1*days:]
+    if None in prices_in_days or None in trend_in_days:
+        return False
+
+    diff = [prices_in_days[i] - trend_in_days[i] for i in range(days)]
+
+    for d in diff:
+        if d < 0:
+            return False
+    return True
+
+
+"""
 Return trend (slope a)
 """
 def return_slope_in_days(data, days):
-    x_list = list(range(len(data)))
-    y_list = [i for i in data]
+    if None in data[-1*days:]:
+        return None
+    
+    x_list = list(range(days))
+    y_list = data[-1*days:]
 
     n = len(x_list)
     x_ave = sum(x_list) / n

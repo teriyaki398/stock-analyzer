@@ -53,8 +53,15 @@ def get_saved_date_by_file_name(file_name):
     return m_date
 
 
-def generate_file_name(config, key, date):
-    return "{}_{}.csv".format(config.kabu_plus_config.get(key).get("file_name_without_ext"), date)
+def is_target_date_file_existing(config, key, date):
+    date_prefix = date_util.datetime_to_date_str(date)
+    file_name = generate_file_name(config, key, date_prefix)
+    file_path = generate_file_path(config, key, file_name)
+    return os.path.exists(file_path)
+
+
+def generate_file_name(config, key, date_prefix):
+    return "{}_{}.csv".format(config.kabu_plus_config.get(key).get("file_name_without_ext"), date_prefix)
 
 
 def generate_file_path(config, key, file_name):

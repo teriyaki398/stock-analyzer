@@ -14,8 +14,10 @@ def datetime_to_date_str(dt):
 def datetime_before_num_days(dt, days):
     return dt - timedelta(days=days)
 
+def datetime_after_num_days(dt, days):
+    return dt + timedelta(days=days)
 
-def yield_date_prefix_except_holiday(start_dt, end_dt):
+def yield_date_except_holiday(start_dt, end_dt):
     total_days = (end_dt - start_dt).days + 1
 
     for i in range(total_days):
