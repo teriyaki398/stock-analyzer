@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from stock_analyzer_library import date_util, data_converter, file_util
+from common_lib import date_util, data_converter, file_util
 
 STOCK_DATA_KEY = "stock_data"
 STOCK_VARIATION_DATA_KEY = "stock_variation_data"

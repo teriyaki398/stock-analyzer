@@ -2,7 +2,7 @@ import os
 import re
 from pathlib import Path
 
-from stock_analyzer_library import date_util
+from common_lib import date_util
 
 """
 return list of all files contained in key directory

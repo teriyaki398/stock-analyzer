@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 
-from stock_analyzer_library import date_util, config_loader, file_util
-from stock_analyzer_library.kabuplus_client import KabuPlusClient
+from common_lib import config_loader, date_util, file_util
+from common_lib.kabuplus_client import KabuPlusClient
 
 
 def main():
