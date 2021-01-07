@@ -1,10 +1,8 @@
 import os
 from datetime import datetime
 
-import config_loader
-from tools import date_util
-from tools import file_util
-from tools.kabuplus_client import KabuPlusClient
+from stock_analyzer_library import date_util, config_loader, file_util
+from stock_analyzer_library.kabuplus_client import KabuPlusClient
 
 
 def main():
@@ -16,8 +14,9 @@ def main():
         print("key={}, last updated = {}".format(key, last_updated_date))
 
         target_key_config = config.kabu_plus_config.get(key)
+        start_date = date_util.datetime_after_num_days(last_updated_date, 1)
 
-        for date in date_util.yield_date_except_holiday(last_updated_date, datetime.now()):
+        for date in date_util.yield_date_except_holiday(start_date, datetime.now()):
             client = KabuPlusClient(config.kabu_plus_id, config.kabu_plus_pw)
 
             date_prefix = date_util.datetime_to_date_str(date)
