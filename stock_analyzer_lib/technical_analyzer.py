@@ -51,13 +51,11 @@ def has_dead_cross(short_trend, long_trend):
 """
 Return true if all prices are higher than each prices of trend
 """
-def is_all_prices_are_higher_than_trend(prices, trend, days):
-    prices_in_days = prices[-1*days:]
-    trend_in_days = trend[-1*days:]
-    if None in prices_in_days or None in trend_in_days:
+def is_all_prices_are_higher_than_trend(prices, trend):
+    if None in prices or None in trend:
         return False
 
-    diff = [prices_in_days[i] - trend_in_days[i] for i in range(days)]
+    diff = [prices[i] - trend[i] for i in range(len(prices))]
 
     for d in diff:
         if d < 0:
