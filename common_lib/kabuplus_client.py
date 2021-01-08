@@ -1,7 +1,8 @@
 import requests
 import time
+from tqdm import tqdm
 
-DEFAULT_INTERVAL = 800
+DEFAULT_INTERVAL = 600  # waiting time(sec)
 
 class KabuPlusClient:
 
@@ -10,7 +11,9 @@ class KabuPlusClient:
         self.password = password
 
     def get(self, url):
-        time.sleep(DEFAULT_INTERVAL)  # To avoid requesting many times
+        print("start waiting... {} sec".format(DEFAULT_INTERVAL))
+        for i in tqdm(range(DEFAULT_INTERVAL)):
+            time.sleep(1)  # To avoid requesting many times
         res = requests.get(url, auth = (self.username, self.password))
 
         if res.ok:

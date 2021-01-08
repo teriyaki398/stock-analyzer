@@ -1,6 +1,6 @@
 # stock-analyzer
 
-# Download data from Kabu+
+### Download data from Kabu+
 ```bash
 export SAVE_BASE_DIR=("Directory path for saving data")
 export KABU_PLUS_ID=("UserId for Kabu+")

@@ -14,37 +14,6 @@ def calc_moving_average(data, days):
 
 
 """
-Connecting regression line split by given days
-"""
-def days_split_regression_line(data, days):
-    surplus = len(data) - int(len(data)/days) * days
-    result = [None for i in range(surplus)]
-    for i in range(surplus, len(data), days):
-        result += calc_regression_line(list(range(i, i+days)), data[i:i+days])
-    return result
-
-
-"""
-Return regression line (回帰直線) calculated by least square method
-x, y: list
-"""
-def calc_regression_line(x_list, y_list):
-    n = len(x_list)
-    x_ave = sum(x_list) / n
-    y_ave = sum(y_list) / n
-
-    x_dispersion = sum([(xi - x_ave)**2 for xi in x_list]) / n
-    covariance = sum([(xi - x_ave)*(yi - y_ave) for xi, yi in zip(x_list, y_list)]) / n
-
-    a = covariance / x_dispersion
-    b = y_ave - (a * x_ave)
-    def f(x):
-        return a*x + b
-
-    return [f(x) for x in x_list]
-
-
-"""
 Check it contains only one golden cross.
 """
 def has_one_golden_cross(short_trend, long_trend):
@@ -97,14 +66,34 @@ def is_all_prices_are_higher_than_trend(prices, trend, days):
 
 
 """
+Return regression line (回帰直線) calculated by least square method
+x, y: list
+"""
+def calc_regression_line(x_list, y_list):
+    n = len(x_list)
+    x_ave = sum(x_list) / n
+    y_ave = sum(y_list) / n
+
+    x_dispersion = sum([(xi - x_ave)**2 for xi in x_list]) / n
+    covariance = sum([(xi - x_ave)*(yi - y_ave) for xi, yi in zip(x_list, y_list)]) / n
+
+    a = covariance / x_dispersion
+    b = y_ave - (a * x_ave)
+    def f(x):
+        return a*x + b
+
+    return [f(x) for x in x_list]
+
+
+"""
 Return trend (slope a)
 """
-def return_slope_in_days(data, days):
-    if None in data[-1*days:]:
+def calc_regression_line_slope(data):
+    if None in data:
         return None
-    
-    x_list = list(range(days))
-    y_list = data[-1*days:]
+
+    x_list = list(range(len(data)))
+    y_list = data
 
     n = len(x_list)
     x_ave = sum(x_list) / n

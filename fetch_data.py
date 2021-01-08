@@ -11,7 +11,7 @@ def main():
     # Download data if new data is existing
     for key in config.kabu_plus_config.keys():
         last_updated_date = file_util.get_last_updated_date(config, key)
-        print("key={}, last updated = {}".format(key, last_updated_date))
+        print("Start downloading {}. last updated = {}".format(key, last_updated_date))
 
         target_key_config = config.kabu_plus_config.get(key)
         start_date = date_util.datetime_after_num_days(last_updated_date, 1)
